@@ -8,8 +8,6 @@ import {
   View,
   Text,
 } from 'react-native';
-import router from '../utils/routerDecorator';
-import { loadToken } from '../logics/rpc';
 
 const styles = StyleSheet.create({
   container: {
@@ -20,20 +18,12 @@ const styles = StyleSheet.create({
   },
 });
 
-@router('splash')
-export default class Splash extends Component {
-  static hideNavBar = true;
+export default class Home extends Component {
+  static hideNavBar = false;
+  static title = '首页';
   static contextTypes = {
     navigator: PropTypes.object,
   };
-  async componentWillMount() {
-    const { navigator } = this.context;
-    if (await loadToken()) {
-      navigator.replace({ location: '/home/home' });
-    } else {
-      navigator.replace({ location: '/auth/login' });
-    }
-  }
   render() {
     return (
       <View style={styles.container}>

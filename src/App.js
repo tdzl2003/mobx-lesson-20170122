@@ -10,18 +10,16 @@ import {
   Navigator,
   ToastAndroid,
 } from 'react-native';
-import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
 import { observer } from 'mobx-react/native';
 import { Subscribe, SubscribeDOM } from 'react-subscribe';
-import routeConfig from './pages';
+import Home from './pages/Home';
 import NavigatorProvider from './utils/NavigatorProvider';
-import RouterContainer from './utils/RouterContainer';
-import RPC from './logics/rpc';
 import hookNavigator from './utils/hookNavigator';
 import { configureScene } from './SceneConfig';
+import NavBar from './pages/NavBar';
 
 const INITIAL_ROUTE = {
-  location: '/splash',
+  component: Home,
 };
 
 const styles = StyleSheet.create({
@@ -32,87 +30,46 @@ const styles = StyleSheet.create({
 });
 
 function configureSceneWithRoute(route) {
-  return configureScene(routeConfig, route);
+  return configureScene(route);
 }
 
 @observer
 export default class App extends Component {
-  lastBackPressed = 0;
-  lastAppState = 'active';
-  onHardwareBackPress = () => {
-    const nav = this.navigator;
-    const routers = nav.getCurrentRoutes();
-
-    if (routers.length > 1) {
-      // 当按下back键时回退到上一页面
-      nav.pop();
-      return true;
-    }
-    const now = Date.now();
-    if (now - this.lastBackPressed < 1500) {
-      BackAndroid.exitApp();
-    } else {
-      this.lastBackPressed = now;
-      ToastAndroid.show('再按一次返回键退出本应用', 1000);
-    }
-
-    return true;
-  };
-  onAppStateChange = (state) => {
-    if (state === 'active' && this.lastAppState !== 'active') {
-      dismissKeyboard();
-    }
-    this.lastAppState = state;
-  };
-  onWillFocus = () => {
-    dismissKeyboard();
-  };
-  onInvalidToken = () => {
-    const { navigator } = this;
-    if (navigator) {
-      navigator.immediatelyResetRouteStack([{
-        location: '/auth/login',
-      }]);
-    }
-  };
   renderScene = (currentRoute, navigator) => {
-    const { location, passProps, component: Comp } = currentRoute || 0;
-    if (location) {
-      // 通过location渲染页面
-      return (
-        <NavigatorProvider navigator={navigator} currentRoute={currentRoute}>
-          <RouterContainer
-            routeConfig={routeConfig}
-            passProps={passProps}
-            location={location}
-          />
-        </NavigatorProvider>
-      );
-    } else if (Comp) {
-      // 通过component渲染页面,用于Dialog等场景
+    const { passProps, component: Comp } = currentRoute || 0;
+    if (Comp) {
       return (
         <NavigatorProvider navigator={navigator}>
-          <Comp {...passProps} />
+          <NavBar navConfig={Comp}>
+            <Comp {...passProps} />
+          </NavBar>
         </NavigatorProvider>
       );
     }
     return null;
+  };
+  onHardwareBackPress = () => {
+    if (this.navigator) {
+      this.navigator.pop();
+    }
+  }
+  onNavigatorRef = (ref) => {
+    this.navigator = ref;
+    if (ref) {
+      hookNavigator(ref);
+    }
   };
   render() {
     return (
       <View style={styles.root}>
         <SubscribeDOM target={AppState} eventName="change" listener={this.onAppStateChange} />
         {__ANDROID__ && <SubscribeDOM target={BackAndroid} eventName="hardwareBackPress" listener={this.onHardwareBackPress} />}
-        <Subscribe target={RPC} eventName="invalidToken" listener={this.onInvalidToken} />
         <Navigator
           configureScene={configureSceneWithRoute}
           onWillFocus={this.onWillFocus}
           initialRoute={INITIAL_ROUTE}
           renderScene={this.renderScene}
-          ref={(ref) => {
-            this.navigator = ref;
-            hookNavigator(ref);
-          }}
+          ref={this.onNavigatorRef}
         />
       </View>
     );

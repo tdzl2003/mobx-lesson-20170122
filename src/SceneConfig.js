@@ -36,40 +36,11 @@ export const BottomModal = {
   isModal: true,
 };
 
-export function configureScene(routeConfig, { sceneConfig, location, component }) {
+export function configureScene({ sceneConfig, location, component }) {
   if (sceneConfig) {
     return sceneConfig;
   }
-  if (location) {
-    let matchedConfig = null;
-    let debugWarn = true;
-    match({
-      location,
-      routes: routeConfig,
-    }, (err, _, passProps) => {
-      if (err) {
-        console.error(err.stack);
-        return;
-      }
-      if (passProps) {
-        const { routes } = passProps;
-        // Find any scene config from route configs.
-        matchedConfig = routes
-          .map(v => v.sceneConfig || (v.component && v.component.sceneConfig))
-          .find(v => v);
-      }
-      if (__DEV__) {
-        debugWarn = false;
-      }
-    });
-
-    if (__DEV__ && debugWarn) {
-      console.warn('Async component is not supported in react-native, your sceneConfig may be lost.');
-    }
-    if (matchedConfig) {
-      return matchedConfig;
-    }
-  } else if (component && component.sceneConfig) {
+  if (component && component.sceneConfig) {
     return component.sceneConfig;
   }
   return DefaultSceneConfig;
