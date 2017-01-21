@@ -31,16 +31,18 @@ const styles = StyleSheet.create({
   left: {
     position: 'absolute',
     top: __IOS__ ? 20 : 0,
-    left: 15,
+    left: 0,
     bottom: 0,
     justifyContent: 'center',
+    paddingHorizontal: 15,
   },
   right: {
     position: 'absolute',
     top: __IOS__ ? 20 : 0,
-    right: 15,
+    right: 0,
     bottom: 0,
     justifyContent: 'center',
+    paddingHorizontal: 15,
   },
   button: {
     color: 'white',
