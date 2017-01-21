@@ -99,7 +99,7 @@ export default class NavBar extends Component {
         {
           !navConfig.hideNavBar &&
           <View style={styles.navBar}>
-            <Text style={styles.title}>{navConfig.title}</Text>
+            <Text style={styles.title} numberOfLines={1}>{navConfig.title}</Text>
             { currentIndex > 0 && !left && this.renderBack() }
             {
               left && <TouchableOpacity style={styles.left} onPress={this.onLeftPressed}>

@@ -11,7 +11,7 @@ import {
 export default class NavigatorProvider extends React.Component {
   static propTypes = {
     navigator: PropTypes.instanceOf(Navigator),
-    currentRoute: PropTypes.object,
+    currentRoute: PropTypes.shape({}),
     children: PropTypes.oneOfType([
       PropTypes.arrayOf(PropTypes.element),
       PropTypes.element,

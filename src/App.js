@@ -35,19 +35,6 @@ function configureSceneWithRoute(route) {
 
 @observer
 export default class App extends Component {
-  renderScene = (currentRoute, navigator) => {
-    const { passProps, component: Comp } = currentRoute || 0;
-    if (Comp) {
-      return (
-        <NavigatorProvider navigator={navigator}>
-          <NavBar navConfig={Comp}>
-            <Comp {...passProps} />
-          </NavBar>
-        </NavigatorProvider>
-      );
-    }
-    return null;
-  };
   onHardwareBackPress = () => {
     if (this.navigator) {
       this.navigator.pop();
@@ -58,6 +45,19 @@ export default class App extends Component {
     if (ref) {
       hookNavigator(ref);
     }
+  };
+  renderScene = (currentRoute, navigator) => {
+    const { passProps, component: Comp } = currentRoute || 0;
+    if (Comp) {
+      return (
+        <NavigatorProvider navigator={navigator} currentRoute={currentRoute}>
+          <NavBar navConfig={Comp}>
+            <Comp {...passProps} />
+          </NavBar>
+        </NavigatorProvider>
+      );
+    }
+    return null;
   };
   render() {
     return (
