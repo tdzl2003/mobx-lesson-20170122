@@ -5,7 +5,6 @@
 import {
   Navigator,
 } from 'react-native';
-import { match } from 'react-router';
 import buildStyleInterpolator from 'react-native/Libraries/Utilities/buildStyleInterpolator';
 
 export const DefaultSceneConfig = Navigator.SceneConfigs.PushFromRight;
