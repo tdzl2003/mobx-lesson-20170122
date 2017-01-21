@@ -34,6 +34,7 @@ export default class Home extends Component {
         <Link component={require('./6-list-and-global-computed').default}>6 - List & Global Computed</Link>
         <Link component={require('./7-observable-now').default}>7 - Observable `now`</Link>
         <Link component={require('./8-autosave').default}>8 - Autosave</Link>
+        <Link component={require('./9-optimized-swiper').default}>9 - Optimized Swiper</Link>
       </View>
     );
   }
