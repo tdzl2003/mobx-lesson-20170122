@@ -2,7 +2,7 @@
  * Created by tdzl2003 on 1/20/17.
  */
 
-import { observable, computed, autorun } from 'mobx';
+import { observable, autorun } from 'mobx';
 
 export default function demo3() {
   const value = observable({

@@ -1,6 +1,10 @@
 Mobx 20170122 天地之灵-Mobx案例精讲 
 ==========================
 
+直播20:00正式开始,下午时间基本是扯淡闲聊:)
+
+本demo源代码在[github](https://github.com/tdzl2003/mobx-lesson-20170122)上
+
 1. 概念简介
 2. 入门 - Counter
 3. 入门 - TODO List

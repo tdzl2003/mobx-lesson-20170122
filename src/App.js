@@ -39,6 +39,7 @@ export default class App extends Component {
     if (this.navigator) {
       this.navigator.pop();
     }
+    return true;
   }
   onNavigatorRef = (ref) => {
     this.navigator = ref;
@@ -62,7 +63,6 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.root}>
-        <SubscribeDOM target={AppState} eventName="change" listener={this.onAppStateChange} />
         {__ANDROID__ && <SubscribeDOM target={BackAndroid} eventName="hardwareBackPress" listener={this.onHardwareBackPress} />}
         <Navigator
           configureScene={configureSceneWithRoute}
